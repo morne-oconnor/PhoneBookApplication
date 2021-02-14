@@ -41,7 +41,7 @@ namespace PhoneBookApplication.Sidecar.Repository.Sql
             using var connection = new SqlConnection(_configuration.ConnectionString);
             connection.Open();
 
-            var model = connection.Execute(storedProcedure, parameterObject, null, null, CommandType.StoredProcedure);
+            connection.Execute(storedProcedure, parameterObject, null, null, CommandType.StoredProcedure);
         }
         public List<T> TransactionList<T>(Func<SqlTransaction, List<T>, List<T>> execution, List<T> models)
         {

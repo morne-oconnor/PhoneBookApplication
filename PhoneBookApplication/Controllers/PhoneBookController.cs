@@ -26,11 +26,13 @@ namespace PhoneBookApplication.Controllers
             {
                 List<DisplayPhoneBookModel> phoneBookEntries = GetContacts();
                 _logger.LogInformation("Got phonebook entries");
+
                 return View(phoneBookEntries);
             }
             catch(Exception ex)
             {
                 _logger.LogError(ex, "Error occurred on Index Controller");
+
                 return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
       
@@ -42,12 +44,14 @@ namespace PhoneBookApplication.Controllers
             {
                 _phoneBookComponent.AddContact(phoneBook);
                 _logger.LogInformation($"Added phonebook entry - Name: {phoneBook.Name}");
+
                 return true;
 
             }
             catch(Exception ex)
             {
                 _logger.LogError(ex, "Error occurred on Index Controller");
+
                 return false;
             }
 
@@ -63,6 +67,7 @@ namespace PhoneBookApplication.Controllers
             catch(Exception ex)
             {
                 _logger.LogError(ex, "Error occurred on Index Controller");
+
                 return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
