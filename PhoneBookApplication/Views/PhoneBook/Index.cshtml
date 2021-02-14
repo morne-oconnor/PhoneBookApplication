@@ -1,0 +1,61 @@
+﻿@model IEnumerable<DisplayPhoneBookModel>
+@{
+    ViewData["Title"] = "PhoneBook";
+}
+
+<div>
+    <h1 id="headerPhone">Welcome to Morne's PhoneBook Application</h1>
+</div>
+<div class="container">
+    <button id="addNewContact" type="button" class="btn btn-dark" data-toggle="modal" data-target="#myModal">Add New Contact</button>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="popUpHeader">Add Contact</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" placeholder="Name" id="nameInput" name="Name">
+                    <input type="text" class="form-control" placeholder="Entries" id="entriesInput" name="Entries">
+                    <input type="text" class="form-control" placeholder="PhoneNumber" id="phoneNumberInput" name="PhoneNumber">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" id="closePopUp" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="savePopUp" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="tableEntryPhone">
+    <div id="searchField">
+        <input type="text" class="form-control rounded" id="myInput" onkeyup="myFunction()" placeholder="Search Contact">
+    </div>
+    <table class="table table-striped" id="phoneBookTable">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Entries</th>
+                <th scope="col">PhoneNumber</th>
+                <th scope="col">Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in Model)
+            {
+                <tr>
+                    <td>@record.Id</td>
+                    <td>@record.Name</td>
+                    <td>@record.Entries</td>
+                    <td>@record.PhoneNumber</td>
+                    <td>@record.CreatedDateTime</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
