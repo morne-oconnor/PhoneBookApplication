@@ -1,10 +1,7 @@
 ﻿using PhoneBookApplication.Components.Interfaces;
 using PhoneBookApplication.Models;
-using PhoneBookApplication.Sidecar.Repository.Sql.Interfaces;
-using System;
+using PhoneBookApplication.Repository.Sql.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PhoneBookApplication.Components
 {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PhoneBookApplication.Sidecar.Nlog
+namespace PhoneBookApplication.Nlog
 {
     public class NlogConfiguration
     {

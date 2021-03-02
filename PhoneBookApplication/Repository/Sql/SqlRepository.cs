@@ -1,13 +1,12 @@
 ﻿using Dapper;
-using PhoneBookApplication.Sidecar.Repository.Sql.Interfaces;
+using PhoneBookApplication.Repository.Sql.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace PhoneBookApplication.Sidecar.Repository.Sql
+namespace PhoneBookApplication.Repository.Sql
 {
     public class SqlRepository : ISqlRepository
     {

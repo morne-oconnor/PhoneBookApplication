@@ -1,4 +1,5 @@
-This solution was written in the following languages:
+This Project is written in .NET CORE
+The project was written in the following languages:
 HTML
 CSS
 Javascript
@@ -8,7 +9,13 @@ C#
 SQL
 NLog
 
-The project consists of a fronend, backend and database project
-The UI communicates to their respective contollers which then goes the the Component class.
-From there I have a SQL Base class and a derived class which communicates with the database.
-I used Dapper nuget package to manage my communication between my project and database.
+The project consists of a frontend, backend and database project.
+The UI calls their respective contoller which then calls the Component class.
+The Component class is used to call its respective dependencies such as the SQL Reposiotry.
+Dapper is being used in the SQL Repository class.
+
+For the Database project called dbPhonebook, it consists of two tables and two stored procedures.
+tblEntry has an PhoneNumber column which is the primary key and a Name column which is a foreign key that has reference or relation to tblPhoneBook.
+tblPhoneBook has a Name column which is its Primary Key.
+
+

@@ -32,11 +32,11 @@
 </div>
 
 <div id="tableEntryPhone">
-    <div id="searchField">
-        <input type="text" class="form-control rounded" id="myInput" onkeyup="myFunction()" placeholder="Search Contact">
+    <div id="searchField" class="input-group rounded">
+        <input type="text" class="form-control rounded" id="myInput" onkeyup="myFunction()" placeholder="Search Contact" aria-describedby="search-addon" />
     </div>
-    <table class="table table-striped" id="phoneBookTable">
-        <thead>
+    <table class="table table-hover table-bordered table-dark" id="phoneBookTable">
+        <thead  class="thead-dark">
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Name</th>

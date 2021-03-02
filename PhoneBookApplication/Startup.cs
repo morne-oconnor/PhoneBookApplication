@@ -1,23 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using NLog;
-using NLog.Config;
-using NLog.Extensions.Logging;
-using NLog.Targets;
 using PhoneBookApplication.Components;
 using PhoneBookApplication.Components.Interfaces;
-using PhoneBookApplication.Sidecar.Nlog;
-using PhoneBookApplication.Sidecar.Repository.Sql;
-using PhoneBookApplication.Sidecar.Repository.Sql.Interfaces;
+using PhoneBookApplication.Repository.Sql;
+using PhoneBookApplication.Repository.Sql.Interfaces;
 
 namespace PhoneBookApplication
 {

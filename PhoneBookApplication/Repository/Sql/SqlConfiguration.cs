@@ -1,10 +1,6 @@
-﻿using PhoneBookApplication.Sidecar.Repository.Sql.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using PhoneBookApplication.Repository.Sql.Interfaces;
 
-namespace PhoneBookApplication.Sidecar.Repository.Sql
+namespace PhoneBookApplication.Repository.Sql
 {
     public class SqlConfiguration : ISqlConfiguration
     {
