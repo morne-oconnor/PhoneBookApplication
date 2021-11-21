@@ -1,12 +1,9 @@
 using System;
-using System.IO;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
 using NLog.Web;
+using PhoneBookApplication.Helpers;
 
 namespace PhoneBookApplication
 {
@@ -14,15 +11,15 @@ namespace PhoneBookApplication
     {
         public static void Main(string[] args)
         {
-            var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            NLog.Logger logger = NLogBuilder.ConfigureNLog(ValuesHelper.NLOG_CONFIG).GetCurrentClassLogger();
             try
             {
-                logger.Debug("init main");
+                logger.Debug(ValuesHelper.INITIALIAZE_MAIN_INFO_MESSAGE);
                 CreateHostBuilder(args).Build().Run();
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                logger.Error(exception, "Stopped program because of exception");
+                logger.Error(ex.Message);
                 throw;
             }
             finally
@@ -40,7 +37,7 @@ namespace PhoneBookApplication
               .ConfigureLogging(logging =>
               {
                   logging.ClearProviders();
-                  logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                  logging.SetMinimumLevel(LogLevel.Trace);
               })
               .UseNLog();
     }
