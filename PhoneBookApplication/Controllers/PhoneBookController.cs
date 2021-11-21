@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PhoneBookApplication.Components.Interfaces;
@@ -18,41 +18,31 @@ namespace PhoneBookApplication.Controllers
             _phoneBookComponent = phoneBookComponent;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             try
             {
-                List<DisplayPhoneBookModel> phoneBookEntries = GetContacts();
-                _logger.LogInformation("Got phonebook entries");
-
-                return View(phoneBookEntries);
+                return View(await _phoneBookComponent.GetContacts());
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, "Error occurred on Index Controller");
-
+                _logger.LogError(ex.Message);
                 return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-            }
-      
+            }     
         }
+
         [HttpPost]
-        public bool AddContact(PhoneBookModel phoneBook)
+        public async Task<bool> AddContact(PhoneBookModel phoneBook)
         {
             try
             {
-                _phoneBookComponent.AddContact(phoneBook);
-                _logger.LogInformation($"Added phonebook entry - Name: {phoneBook.Name}");
-
-                return true;
-
+                return await _phoneBookComponent.AddContact(phoneBook);
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, "Error occurred on Index Controller");
-
+                _logger.LogError(ex.Message);
                 return false;
             }
-
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -64,15 +54,9 @@ namespace PhoneBookApplication.Controllers
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, "Error occurred on Index Controller");
-
+                _logger.LogError(ex.Message);
                 return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-        }
-
-        private List<DisplayPhoneBookModel> GetContacts()
-        {
-            return _phoneBookComponent.GetContacts();
         }
     }
 }

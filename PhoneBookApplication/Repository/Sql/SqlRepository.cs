@@ -3,77 +3,73 @@ using PhoneBookApplication.Repository.Sql.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace PhoneBookApplication.Repository.Sql
 {
     public class SqlRepository : ISqlRepository
     {
-        protected ISqlConfiguration _configuration;
+        private readonly ISqlConfiguration _configuration;
 
         public SqlRepository(ISqlConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public List<T> QueryList<T>(string storedProcedure, object parameterObject)
+        public async Task<List<T>> QueryList<T>(string storedProcedure, object parameterObject = null)
         {
-            using var connection = new SqlConnection(_configuration.ConnectionString);
-            connection.Open();
-
-            var models = connection.Query<T>(storedProcedure, parameterObject).ToList();
-
-            return models;
+            using SqlConnection connection = new SqlConnection(_configuration.ConnectionString);
+            await connection.OpenAsync();
+            
+            return (List<T>)await connection.QueryAsync<T>(storedProcedure, parameterObject);
         }
-        public T QueryOne<T>(string storedProcedure, object parameterObject)
+        public async Task<T> QueryOne<T>(string storedProcedure, object parameterObject = null)
         {
-            using var connection = new SqlConnection(_configuration.ConnectionString);
-            connection.Open();
-
-            var model = connection.Query<T>(storedProcedure, parameterObject).FirstOrDefault();
-
-            return model;
+            using SqlConnection connection = new SqlConnection(_configuration.ConnectionString);
+            await connection.OpenAsync();
+            
+            return  await connection.QueryFirstAsync<T>(storedProcedure, parameterObject);
         }
-        public void Execute(string storedProcedure, object parameterObject)
+        public async Task<int> Execute(string storedProcedure, object parameterObject = null)
         {
-            using var connection = new SqlConnection(_configuration.ConnectionString);
-            connection.Open();
+            using SqlConnection connection = new SqlConnection(_configuration.ConnectionString);
+            await connection.OpenAsync();
 
-            connection.Execute(storedProcedure, parameterObject, null, null, CommandType.StoredProcedure);
+            return await connection.ExecuteAsync(storedProcedure, parameterObject, 
+                null, null, CommandType.StoredProcedure);
         }
-        public List<T> TransactionList<T>(Func<SqlTransaction, List<T>, List<T>> execution, List<T> models)
+        public async Task<List<T>> TransactionList<T>(Func<SqlTransaction, List<T>, List<T>> execution, List<T> models)
         {
-            using var connection = new SqlConnection(_configuration.ConnectionString);
-            connection.Open();
+            using SqlConnection connection = new SqlConnection(_configuration.ConnectionString);
+            await connection.OpenAsync();
 
-            using var transaction = connection.BeginTransaction();
-            models = (List<T>)execution.DynamicInvoke(transaction, models);
+            using DbTransaction transaction = await connection.BeginTransactionAsync();
+            List<T> result  = (List<T>)execution.DynamicInvoke(transaction, models);
+            await transaction.CommitAsync();
 
-            transaction.Commit();
-            return models;
-
+            return result;
         }
-        public T TransactionOne<T>(Func<SqlTransaction, T, T> execution, T model)
+        public async Task<T> TransactionOne<T>(Func<SqlTransaction, T, T> execution, T model)
         {
-            using var connection = new SqlConnection(_configuration.ConnectionString);
-            connection.Open();
+            using SqlConnection connection = new SqlConnection(_configuration.ConnectionString);
+            await connection.OpenAsync();
 
-            using var transaction = connection.BeginTransaction();
-            model = (T)execution.DynamicInvoke(transaction, model);
+            using DbTransaction transaction = await connection.BeginTransactionAsync();
+            T result = (T)execution.DynamicInvoke(transaction, model);
+            await transaction.CommitAsync();
 
-            transaction.Commit();
-
-            return model;
+            return result;
         }
-        public bool DatabaseAvailable()
+        public async Task<bool> DatabaseAvailable()
         {
             int result;
-            using var connection = new SqlConnection(_configuration.ConnectionString);
 
-            connection.Open();
-
+            using SqlConnection connection = new SqlConnection(_configuration.ConnectionString);
+            await connection.OpenAsync();
             result = (int)connection.ExecuteScalar("SELECT 1");
+
             return result > 0;
         }
     }

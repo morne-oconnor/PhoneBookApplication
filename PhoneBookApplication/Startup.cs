@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PhoneBookApplication.Components;
 using PhoneBookApplication.Components.Interfaces;
+using PhoneBookApplication.Helpers;
 using PhoneBookApplication.Repository.Sql;
 using PhoneBookApplication.Repository.Sql.Interfaces;
 
@@ -17,7 +18,7 @@ namespace PhoneBookApplication
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddEnvironmentVariables()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile(ValuesHelper.APP_SETTINGS_JSON, optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
             Configuration = builder.Build();
@@ -27,7 +28,7 @@ namespace PhoneBookApplication
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = Configuration.GetSection("SqlConnection").Value;
+            string connectionString = Configuration.GetSection(ValuesHelper.SQL_CONNECTION).Value;
             SqlConfiguration configuration = new SqlConfiguration(connectionString);
             services.AddSingleton<ISqlConfiguration>(configuration);
             services.AddSingleton<ISqlRepository, SqlRepository>();
@@ -44,7 +45,7 @@ namespace PhoneBookApplication
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler(ValuesHelper.ERROR_PATH);
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -57,8 +58,8 @@ namespace PhoneBookApplication
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=PhoneBook}/{action=Index}/{id?}");
+                    name: ValuesHelper.DEFAULT,
+                    pattern: ValuesHelper.CONTROLLER_PATTERN);
             });
         }
     }

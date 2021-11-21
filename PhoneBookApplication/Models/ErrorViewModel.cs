@@ -1,5 +1,3 @@
-using System;
-
 namespace PhoneBookApplication.Models
 {
     public class ErrorViewModel
